@@ -26,7 +26,7 @@ Error OSListener::start_listen() {
   if (OS::get_singleton()->get_name() == String("Linux")) {
     return start_listen_x11();
   } else {
-    WARN_PRINT_ONCE("Failed to identify OS");
+    WARN_PRINT_ONCE("Not implemented for this OS");
   }
 
   return FAILED;
@@ -36,7 +36,7 @@ void OSListener::stop_listen() {
   if (OS::get_singleton()->get_name() == String("Linux")) {
     return stop_listen_x11();
   } else {
-    WARN_PRINT_ONCE("Failed to identify OS");
+    WARN_PRINT_ONCE("Not implemented for this OS");
   }
 }
 
@@ -44,7 +44,7 @@ OSEvent *OSListener::get_event() {
   if (OS::get_singleton()->get_name() == String("Linux")) {
     return get_x11_event();
   } else {
-    WARN_PRINT_ONCE("Failed to identify OS");
+    WARN_PRINT_ONCE("Not implemented for this OS");
   }
 
   return nullptr;
