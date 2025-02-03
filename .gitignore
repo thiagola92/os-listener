@@ -1,0 +1,17 @@
+# Scons
+*.dblite
+
+# Linux
+*.os
+*.so
+
+# Windows
+*.obj
+*.lib
+*.exp
+*.dll
+
+# Binaries
+test/bin/*
+!test/bin/.gitkeep
+!test/bin/gdexample.gdextension
