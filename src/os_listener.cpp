@@ -1,13 +1,21 @@
 #include "os_listener.h"
 #include "godot_cpp/core/error_macros.hpp"
-#include "x11_listener.h"
 
 #include "godot_cpp/classes/os.hpp"
 #include "godot_cpp/core/class_db.hpp"
 #include "godot_cpp/core/memory.hpp"
 #include "godot_cpp/core/print_string.hpp"
 #include "os_event.h"
+
 #include <cstdlib>
+
+#ifdef OS_MACOS
+//
+#elif OS_WINDOWS
+//
+#elif OS_LINUX
+#include "x11_listener.h"
+#endif
 
 using namespace godot;
 
@@ -23,31 +31,45 @@ OSListener *OSListener::get_singleton() {
 }
 
 Error OSListener::start_listen() {
-  if (OS::get_singleton()->get_name() == String("Linux")) {
-    return start_listen_x11();
-  } else {
-    WARN_PRINT_ONCE("Not implemented for this OS");
-  }
-
+#ifdef OS_MACOS
+  WARN_PRINT_ONCE("Not implemented for this OS");
   return FAILED;
+#elif OS_WINDOWS
+  WARN_PRINT_ONCE("Not implemented for this OS");
+  return FAILED;
+#elif OS_LINUX
+  return start_listen_x11();
+#else
+  WARN_PRINT_ONCE("Not implemented for this OS");
+  return FAILED;
+#endif
 }
 
 void OSListener::stop_listen() {
-  if (OS::get_singleton()->get_name() == String("Linux")) {
-    return stop_listen_x11();
-  } else {
-    WARN_PRINT_ONCE("Not implemented for this OS");
-  }
+#ifdef OS_MACOS
+  WARN_PRINT_ONCE("Not implemented for this OS");
+#elif OS_WINDOWS
+  WARN_PRINT_ONCE("Not implemented for this OS");
+#elif OS_LINUX
+  stop_listen_x11();
+#else
+  WARN_PRINT_ONCE("Not implemented for this OS");
+#endif
 }
 
 OSEvent *OSListener::get_event() {
-  if (OS::get_singleton()->get_name() == String("Linux")) {
-    return get_x11_event();
-  } else {
-    WARN_PRINT_ONCE("Not implemented for this OS");
-  }
-
+#ifdef OS_MACOS
+  WARN_PRINT_ONCE("Not implemented for this OS");
   return nullptr;
+#elif OS_WINDOWS
+  WARN_PRINT_ONCE("Not implemented for this OS");
+  return nullptr;
+#elif OS_LINUX
+  return get_x11_event();
+#else
+  WARN_PRINT_ONCE("Not implemented for this OS");
+  return nullptr;
+#endif
 }
 
 void OSListener::_bind_methods() {
