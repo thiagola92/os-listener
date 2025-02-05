@@ -12,10 +12,16 @@ if env["platform"] == "macos":
 elif env["platform"] == "windows":
     env.Append(CPPDEFINES=["OS_WINDOWS"])
 elif env["platform"] == "linux":
-    env.Append(LIBS=["X11", "xcb", "xcb-xinput"], CPPDEFINES=["OS_LINUX"])
+    env.Append(
+        LIBS=["X11", "xcb", "xcb-xinput", "wayland-client"],
+        CPPDEFINES=["OS_LINUX"],
+    )
 
     library = env.SharedLibrary(
-        "test/bin/liboslistener{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "test/bin/liboslistener{}{}".format(
+            env["suffix"],
+            env["SHLIBSUFFIX"],
+        ),
         source=sources,
     )
 else:

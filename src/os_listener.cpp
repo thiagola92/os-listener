@@ -15,6 +15,7 @@
 //
 #elif OS_LINUX
 #include "x11_listener.h"
+// #include "wayland_listener.h"
 #endif
 
 using namespace godot;
@@ -65,6 +66,10 @@ OSEvent *OSListener::get_event() {
   WARN_PRINT_ONCE("Not implemented for this OS");
   return nullptr;
 #elif OS_LINUX
+  if (!OS::get_singleton()->get_environment("WAYLAND_DISPLAY").is_empty()) {
+    // return get_wayland_event();
+  }
+
   return get_x11_event();
 #else
   WARN_PRINT_ONCE("Not implemented for this OS");
