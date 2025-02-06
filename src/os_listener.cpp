@@ -8,6 +8,7 @@
 #include "os_event.h"
 
 #include <cstdlib>
+#include <stdlib.h>
 
 #ifdef OS_MACOS
 //
@@ -66,8 +67,12 @@ OSEvent *OSListener::get_event() {
   WARN_PRINT_ONCE("Not implemented for this OS");
   return nullptr;
 #elif OS_LINUX
-  if (!OS::get_singleton()->get_environment("WAYLAND_DISPLAY").is_empty()) {
-    // return get_wayland_event();
+  const char *x11 = getenv("DISPLAY");
+  const char *wayland = getenv("WAYLAND_DISPLAY");
+
+  if (wayland && !x11) {
+    WARN_PRINT_ONCE("Native Wayland doesn't support global shortcuts");
+    return nullptr;
   }
 
   return get_x11_event();
