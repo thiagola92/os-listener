@@ -10,7 +10,9 @@ env.Append(CPPPATH=["src/"])
 if env["platform"] == "macos":
     env.Append(CPPDEFINES=["OS_MACOS"])
 elif env["platform"] == "windows":
-    env.Append(CPPDEFINES=["OS_WINDOWS"])
+    env.Append(
+        CPPDEFINES=["OS_WINDOWS"],
+    )
 elif env["platform"] == "linux":
     env.Append(
         LIBS=["X11", "xcb", "xcb-xinput", "wayland-client"],
