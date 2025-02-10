@@ -1,5 +1,15 @@
 # os-listener
-**Not thread-safe**  
+Listen for keyboard events from OS (Operating System).  
+
+- Linux
+    - ✔️ X11
+    - ❌ Wayland
+- Windows
+    - ❌ When window is focus
+    - ✔️ When window isn't focus
+- ❌ MacOS
+
+Why only keyboard events? No reason, I could add others.  
 
 # development
 ```bash
