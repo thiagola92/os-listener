@@ -12,9 +12,13 @@
 
 #ifdef OS_MACOS
 //
-#elif OS_WINDOWS
-//
-#elif OS_LINUX
+#endif
+
+#ifdef OS_WINDOWS
+#include "win32_listener.h"
+#endif
+
+#ifdef OS_LINUX
 #include "x11_listener.h"
 // #include "wayland_listener.h"
 #endif
@@ -25,6 +29,7 @@ using namespace godot;
 OSListener *OSListener::singleton = nullptr;
 
 OSListener *OSListener::get_singleton() {
+  print_line("1- get_singleton");
   if (singleton == nullptr) {
     singleton = memnew(OSListener);
   }
@@ -34,39 +39,48 @@ OSListener *OSListener::get_singleton() {
 
 Error OSListener::start_listen() {
 #ifdef OS_MACOS
-  WARN_PRINT_ONCE("Not implemented for this OS");
-  return FAILED;
-#elif OS_WINDOWS
-  WARN_PRINT_ONCE("Not implemented for this OS");
-  return FAILED;
-#elif OS_LINUX
-  return start_listen_x11();
-#else
-  WARN_PRINT_ONCE("Not implemented for this OS");
-  return FAILED;
+  //
 #endif
+
+#ifdef OS_WINDOWS
+  return start_listen_win32();
+#endif
+
+#ifdef OS_LINUX
+  return start_listen_x11();
+#endif
+
+  WARN_PRINT_ONCE("Not implemented for this OS");
+  return FAILED;
 }
 
 void OSListener::stop_listen() {
 #ifdef OS_MACOS
-  WARN_PRINT_ONCE("Not implemented for this OS");
-#elif OS_WINDOWS
-  WARN_PRINT_ONCE("Not implemented for this OS");
-#elif OS_LINUX
-  stop_listen_x11();
-#else
-  WARN_PRINT_ONCE("Not implemented for this OS");
+  //
 #endif
+
+#ifdef OS_WINDOWS
+  return stop_listen_win32();
+#endif
+
+#ifdef OS_LINUX
+  return stop_listen_x11();
+#endif
+
+  WARN_PRINT_ONCE("Not implemented for this OS");
 }
 
 OSEvent *OSListener::get_event() {
 #ifdef OS_MACOS
-  WARN_PRINT_ONCE("Not implemented for this OS");
-  return nullptr;
-#elif OS_WINDOWS
-  WARN_PRINT_ONCE("Not implemented for this OS");
-  return nullptr;
-#elif OS_LINUX
+  //
+#endif
+
+#ifdef OS_WINDOWS
+  print_line("2- get_event");
+  return get_win32_event();
+#endif
+
+#ifdef OS_LINUX
   const char *x11 = getenv("DISPLAY");
   const char *wayland = getenv("WAYLAND_DISPLAY");
 
@@ -76,10 +90,10 @@ OSEvent *OSListener::get_event() {
   }
 
   return get_x11_event();
-#else
+#endif
+
   WARN_PRINT_ONCE("Not implemented for this OS");
   return nullptr;
-#endif
 }
 
 void OSListener::_bind_methods() {

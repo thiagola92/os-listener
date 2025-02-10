@@ -17,3 +17,15 @@ cd ..
 scons platform=linux                            # Debug
 scons platform=linux target=template_release    # Release
 ```
+```
+
+## windows
+```bash
+cd godot-cpp
+godot --dump-extension-api
+python -m SCons platform=windows custom_api_file=extension_api.json
+cd ..
+
+python -m SCons platform=windows                            # Debug
+python -m SCons platform=windows target=template_release    # Release
+```
