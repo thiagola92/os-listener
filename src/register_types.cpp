@@ -10,8 +10,6 @@
 using namespace godot;
 
 void initialize_module(ModuleInitializationLevel p_level) {
-  print_line("initialize_module");
-
   if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
     return;
   }
@@ -21,8 +19,6 @@ void initialize_module(ModuleInitializationLevel p_level) {
 }
 
 void uninitialize_module(ModuleInitializationLevel p_level) {
-  print_line("uninitialize_module");
-
   if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
     return;
   }
