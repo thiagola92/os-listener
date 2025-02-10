@@ -27,9 +27,8 @@ void stop_listen_win32() {
 OSEvent *get_win32_event() {
   MSG msg;
 
-  if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-    // GetMessage(&msg, NULL, 0, 0);
-  }
+  // Don't use GetMessage() because it will block until message arrive.
+  PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
 
   if (events.size() > 0) {
     OSEvent *e = events.front();
