@@ -29,7 +29,6 @@ using namespace godot;
 OSListener *OSListener::singleton = nullptr;
 
 OSListener *OSListener::get_singleton() {
-  print_line("1- get_singleton");
   if (singleton == nullptr) {
     singleton = memnew(OSListener);
   }
@@ -76,7 +75,6 @@ OSEvent *OSListener::get_event() {
 #endif
 
 #ifdef OS_WINDOWS
-  print_line("2- get_event");
   return get_win32_event();
 #endif
 

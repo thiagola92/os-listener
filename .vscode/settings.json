@@ -1,6 +1,8 @@
 {
     "files.associations": {
-        "thread": "cpp"
+        "thread": "cpp",
+        "xiosbase": "cpp",
+        "list": "cpp"
     },
     "clangd.fallbackFlags": [
         "-I${workspaceFolder}/src", // Project headers

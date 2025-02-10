@@ -1,4 +1,5 @@
 # os-listener
+**Not thread-safe**  
 
 # development
 ```bash
@@ -16,7 +17,6 @@ cd ..
 
 scons platform=linux                            # Debug
 scons platform=linux target=template_release    # Release
-```
 ```
 
 ## windows

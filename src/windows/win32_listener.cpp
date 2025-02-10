@@ -1,8 +1,10 @@
 #include "win32_listener.h"
 
+#include <list>
+
 HHOOK handle_hook;
 
-OSEvent *last_event = nullptr;
+std::list<OSEvent *> events;
 
 Error start_listen_win32() {
   handle_hook =
@@ -23,31 +25,35 @@ void stop_listen_win32() {
 }
 
 OSEvent *get_win32_event() {
-  print_line("3- get_win32_event");
-  last_event = nullptr;
   MSG msg;
 
-  if (GetMessage(&msg, NULL, 0, 0)) {
-    //   TranslateMessage(&msg);
-    //   DispatchMessage(&msg);
+  if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+    // GetMessage(&msg, NULL, 0, 0);
   }
 
-  return last_event;
+  if (events.size() > 0) {
+    OSEvent *e = events.front();
+    events.pop_front();
+    return e;
+  }
+
+  return nullptr;
 }
 
 LRESULT CALLBACK _on_event(int number_code, WPARAM wParam, LPARAM lParam) {
-  print_line("4- _on_event");
   if (number_code == HC_ACTION) {
     KBDLLHOOKSTRUCT *keyboard_event = (KBDLLHOOKSTRUCT *)lParam;
 
-    last_event = memnew(OSEvent);
+    OSEvent *event = memnew(OSEvent);
 
     if (wParam == WM_KEYDOWN) {
-      last_event->type = OSEvent::KEY_PRESS;
-      last_event->code = keyboard_event->vkCode;
+      event->type = OSEvent::KEY_PRESS;
+      event->code = keyboard_event->vkCode;
+      events.push_back(event);
     } else if (wParam == WM_KEYUP) {
-      last_event->type = OSEvent::KEY_RELEASE;
-      last_event->code = keyboard_event->vkCode;
+      event->type = OSEvent::KEY_RELEASE;
+      event->code = keyboard_event->vkCode;
+      events.push_back(event);
     }
   }
 

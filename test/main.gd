@@ -9,10 +9,9 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	print("0- _process")
 	var e: OSEvent = OSListener.get_singleton().get_event()
-	#
-	#if e and e.type == e.KEY_PRESS:
-		#print("key pressed")
-	#elif e and e.type == e.KEY_RELEASE:
-		#print("key released")
+	
+	if e and e.type == e.KEY_PRESS:
+		printt(">>>> key pressed", e.code)
+	elif e and e.type == e.KEY_RELEASE:
+		printt(">>>> key released", e.code)

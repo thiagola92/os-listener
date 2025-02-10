@@ -8,7 +8,6 @@
 
 const char *xinput_name = "XInputExtension";
 
-// Not thread-safe.
 xcb_connection_t *connection = nullptr;
 
 // Because xcb_input_event_mask_t doesn't work.
