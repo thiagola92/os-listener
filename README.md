@@ -29,6 +29,8 @@ scons platform=linux                            # Debug
 scons platform=linux target=template_release    # Release
 ```
 
+Binaries will be located at `test/bin`.  
+
 ## windows
 ```bash
 cd godot-cpp
@@ -39,3 +41,5 @@ cd ..
 python -m SCons platform=windows                            # Debug
 python -m SCons platform=windows target=template_release    # Release
 ```
+
+Binaries will be located at `test/bin`.  
