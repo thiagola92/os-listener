@@ -1,8 +1,6 @@
 #include "x11_listener.h"
+#include "key_mapping_x11.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <xcb/xcb.h>
 #include <xcb/xcb_keysyms.h>
 #include <xcb/xinput.h>
@@ -63,25 +61,28 @@ OSEvent *get_x11_event() {
     return nullptr;
   }
 
-  uint32_t keycode;
+  uint32_t raw_keycode;
+  xcb_keysym_t keysym;
   xcb_ge_generic_event_t *generic_event = (xcb_ge_generic_event_t *)event;
   OSEvent *os_event = memnew(OSEvent);
 
   switch (generic_event->event_type) {
   case XCB_INPUT_RAW_KEY_PRESS:
-    keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
+    raw_keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
+    keysym = xcb_key_symbols_get_keysym(keysyms, raw_keycode, 0);
+
     os_event->type = OSEvent::KEY_PRESS;
-    os_event->code =
-        _get_keycode(xcb_key_symbols_get_keysym(keysyms, keycode, 0));
+    os_event->code = _get_godot_keycode(keysym);
 
     free(event);
 
     return os_event;
   case XCB_INPUT_RAW_KEY_RELEASE:
-    keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
+    raw_keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
+    keysym = xcb_key_symbols_get_keysym(keysyms, raw_keycode, 0);
+
     os_event->type = OSEvent::KEY_RELEASE;
-    os_event->code =
-        _get_keycode(xcb_key_symbols_get_keysym(keysyms, keycode, 0));
+    os_event->code = _get_godot_keycode(keysym);
 
     free(event);
 
@@ -137,9 +138,9 @@ Error _start_listen_events() {
   return OK;
 }
 
-// Adaptation from:
-// https://github.com/godotengine/godot/blob/ad9abe841d9bb47a397c5e1a314ced1c5abc1ccd/platform/linuxbsd/x11/key_mapping_x11.cpp#L1159-L1173
-uint32_t _get_keycode(uint32_t keysym) {
+// Adaptation from Godot:
+// https://github.com/godotengine/godot/blob/master/platform/linuxbsd/x11/key_mapping_x11.cpp
+int _get_godot_keycode(xcb_keysym_t keysym) {
   if (keysym >= 0x20 && keysym < 0x7E) {  // ASCII, maps 1-1
     if (keysym > 0x60 && keysym < 0x7B) { // Lowercase ASCII.
       return keysym - 32;
@@ -148,12 +149,10 @@ uint32_t _get_keycode(uint32_t keysym) {
     }
   }
 
-  // Needs a HashMap to be defined and filled like:
-  // https://github.com/godotengine/godot/blob/ad9abe841d9bb47a397c5e1a314ced1c5abc1ccd/platform/linuxbsd/x11/key_mapping_x11.cpp
-  // const Key *key = xkeysym_map.getptr(p_keysym);
-  // if (key) {
-  //   return *key;
-  // }
+  const int k = (int)xkeysym_map[keysym];
+  if (k) {
+    return k;
+  }
 
-  return Key::KEY_NONE;
+  return (int)Keyboard::NONE;
 }
