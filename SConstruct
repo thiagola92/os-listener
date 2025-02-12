@@ -27,7 +27,7 @@ elif env["platform"] == "windows":
     )
 elif env["platform"] == "linux":
     env.Append(
-        LIBS=["X11", "xcb", "xcb-xinput", "wayland-client"],
+        LIBS=["X11", "xcb", "xcb-xinput", "xcb-keysyms", "wayland-client"],
         CPPPATH=["src/linux/"],
         CPPDEFINES=["OS_LINUX"],
     )

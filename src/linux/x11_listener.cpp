@@ -4,11 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <xcb/xcb.h>
+#include <xcb/xcb_keysyms.h>
 #include <xcb/xinput.h>
 
 const char *xinput_name = "XInputExtension";
 
 xcb_connection_t *connection = nullptr;
+xcb_key_symbols_t *keysyms = nullptr;
 
 // Because xcb_input_event_mask_t doesn't work.
 typedef struct Mask {
@@ -30,7 +32,10 @@ Error start_listen_x11() {
     return ERR_CANT_CONNECT;
   }
 
+  keysyms = xcb_key_symbols_alloc(connection);
+
   if (!_is_xinput_present()) {
+    connection = nullptr;
     return ERR_UNAVAILABLE;
   }
 
@@ -39,7 +44,10 @@ Error start_listen_x11() {
 
 void stop_listen_x11() {
   if (connection) {
+    xcb_key_symbols_free(keysyms);
     xcb_disconnect(connection);
+
+    keysyms = nullptr;
     connection = nullptr;
   }
 }
@@ -55,20 +63,25 @@ OSEvent *get_x11_event() {
     return nullptr;
   }
 
+  uint32_t keycode;
   xcb_ge_generic_event_t *generic_event = (xcb_ge_generic_event_t *)event;
   OSEvent *os_event = memnew(OSEvent);
 
   switch (generic_event->event_type) {
   case XCB_INPUT_RAW_KEY_PRESS:
+    keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
     os_event->type = OSEvent::KEY_PRESS;
-    os_event->code = ((xcb_input_raw_key_press_event_t *)event)->detail;
+    os_event->code =
+        _get_keycode(xcb_key_symbols_get_keysym(keysyms, keycode, 0));
 
     free(event);
 
     return os_event;
   case XCB_INPUT_RAW_KEY_RELEASE:
+    keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
     os_event->type = OSEvent::KEY_RELEASE;
-    os_event->code = ((xcb_input_raw_key_release_event_t *)event)->detail;
+    os_event->code =
+        _get_keycode(xcb_key_symbols_get_keysym(keysyms, keycode, 0));
 
     free(event);
 
@@ -122,4 +135,25 @@ Error _start_listen_events() {
   xcb_flush(connection);
 
   return OK;
+}
+
+// Adaptation from:
+// https://github.com/godotengine/godot/blob/ad9abe841d9bb47a397c5e1a314ced1c5abc1ccd/platform/linuxbsd/x11/key_mapping_x11.cpp#L1159-L1173
+uint32_t _get_keycode(uint32_t keysym) {
+  if (keysym >= 0x20 && keysym < 0x7E) {  // ASCII, maps 1-1
+    if (keysym > 0x60 && keysym < 0x7B) { // Lowercase ASCII.
+      return keysym - 32;
+    } else {
+      return keysym;
+    }
+  }
+
+  // Needs a HashMap to be defined and filled like:
+  // https://github.com/godotengine/godot/blob/ad9abe841d9bb47a397c5e1a314ced1c5abc1ccd/platform/linuxbsd/x11/key_mapping_x11.cpp
+  // const Key *key = xkeysym_map.getptr(p_keysym);
+  // if (key) {
+  //   return *key;
+  // }
+
+  return Key::KEY_NONE;
 }

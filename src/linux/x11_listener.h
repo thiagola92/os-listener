@@ -15,4 +15,6 @@ bool _is_xinput_present();
 
 Error _start_listen_events();
 
+uint32_t _get_keycode(uint32_t keysym);
+
 #endif
