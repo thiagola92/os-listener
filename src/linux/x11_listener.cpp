@@ -1,5 +1,4 @@
 #include "x11_listener.h"
-#include "key_mapping_x11.h"
 
 #include <xcb/xcb.h>
 #include <xcb/xcb_keysyms.h>
@@ -138,8 +137,15 @@ Error _start_listen_events() {
   return OK;
 }
 
-// Adaptation from Godot:
-// https://github.com/godotengine/godot/blob/master/platform/linuxbsd/x11/key_mapping_x11.cpp
+/*
+I would love to make an "#include" that would give me access to code from:
+   https://github.com/godotengine/godot/blob/master/platform/linuxbsd/x11/key_mapping_x11.cpp
+   https://github.com/godotengine/godot/blob/master/core/os/keyboard.cpp
+
+But it's not included in "godot-cpp", so I made this adaptation from the Godot.
+It's not good but the other option is to copy and adapt many files from Godot
+project, which would increase the complexity of the project.
+*/
 int _get_godot_keycode(xcb_keysym_t keysym) {
   if (keysym >= 0x20 && keysym < 0x7E) {  // ASCII, maps 1-1
     if (keysym > 0x60 && keysym < 0x7B) { // Lowercase ASCII.
@@ -149,12 +155,5 @@ int _get_godot_keycode(xcb_keysym_t keysym) {
     }
   }
 
-  // I don't know when this is used but I'm including.
-  // This is the reason for "keyboard.h" and "key_mapping_x11.h".
-  const int k = (int)xkeysym_map[keysym];
-  if (k) {
-    return k;
-  }
-
-  return (int)Keyboard::NONE;
+  return 0;
 }
