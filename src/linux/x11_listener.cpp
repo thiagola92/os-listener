@@ -149,6 +149,8 @@ int _get_godot_keycode(xcb_keysym_t keysym) {
     }
   }
 
+  // I don't know when this is used but I'm including.
+  // This is the reason for "keyboard.h" and "key_mapping_x11.h".
   const int k = (int)xkeysym_map[keysym];
   if (k) {
     return k;
