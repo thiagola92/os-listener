@@ -1,4 +1,5 @@
 #include "x11_listener.h"
+#include "key_mapping_x11.h"
 
 #include <xcb/xcb.h>
 #include <xcb/xcb_keysyms.h>
@@ -153,6 +154,11 @@ int _get_godot_keycode(xcb_keysym_t keysym) {
     } else {
       return keysym;
     }
+  }
+
+  const int k = (int)xkeysym_map[keysym];
+  if (k) {
+    return k;
   }
 
   return 0;
