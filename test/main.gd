@@ -2,7 +2,7 @@ extends Node2D
 
 
 func _ready() -> void:
-	print(OSListener.get_singleton().start_listen() == OK)
+	assert(OSListener.get_singleton().start_listen() == OK)
 
 
 func _input(event: InputEvent) -> void:

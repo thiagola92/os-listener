@@ -1,4 +1,4 @@
-# os-listener
+# OSListener
 Listen for keyboard events from OS (Operating System).  
 
 - Linux
@@ -11,12 +11,12 @@ Listen for keyboard events from OS (Operating System).
 
 Why only keyboard events? No reason, I could add others.  
 
-# development
+# Development
 ```bash
 git clone --filter=blob:none --recurse-submodules https://github.com/thiagola92/os-shortcut.git
 ```
 
-## linux (debian)
+## Linux (debian)
 ```bash
 sudo apt install libx11-dev libxcb-xinput-dev
 
@@ -31,7 +31,7 @@ scons platform=linux target=template_release    # Release
 
 Binaries will be located at `test/bin`.  
 
-## windows
+## Windows
 ```bash
 cd godot-cpp
 godot --dump-extension-api
