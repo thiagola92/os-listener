@@ -15,4 +15,6 @@ OSEvent *get_win32_event();
 
 LRESULT CALLBACK _on_event(int number_code, WPARAM wParam, LPARAM lParam);
 
+int _get_godot_keycode(DWORD vkcode);
+
 #endif

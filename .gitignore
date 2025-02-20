@@ -19,3 +19,6 @@ test/export/**
 test/bin/*
 !test/bin/.gitkeep
 !test/bin/gdexample.gdextension
+
+# Visual Studio
+.vs/**

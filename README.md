@@ -34,7 +34,7 @@ Binaries will be located at `test/bin`.
 ## Windows
 ```bash
 cd godot-cpp
-godot --dump-extension-api
+./godot --dump-extension-api
 python -m SCons platform=windows custom_api_file=extension_api.json
 cd ..
 
