@@ -1,13 +1,11 @@
 #include "os_listener.h"
-#include "godot_cpp/core/error_macros.hpp"
-
-#include "godot_cpp/classes/os.hpp"
-#include "godot_cpp/core/class_db.hpp"
-#include "godot_cpp/core/memory.hpp"
-#include "godot_cpp/core/print_string.hpp"
-#include "os_event.h"
 
 #include <cstdlib>
+#include <godot_cpp/classes/os.hpp>
+#include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/core/error_macros.hpp>
+#include <godot_cpp/core/memory.hpp>
+#include <godot_cpp/core/print_string.hpp>
 #include <stdlib.h>
 
 #ifdef OS_MACOS
@@ -69,7 +67,7 @@ void OSListener::stop_listen() {
   WARN_PRINT_ONCE("Not implemented for this OS");
 }
 
-OSEvent *OSListener::get_event() {
+InputEvent *OSListener::get_event() {
 #ifdef OS_MACOS
   //
 #endif

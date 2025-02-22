@@ -1,7 +1,7 @@
 #ifndef OSLISTENER_H
 #define OSLISTENER_H
 
-#include "os_event.h"
+#include <godot_cpp/classes/input_event.hpp>
 
 namespace godot {
 
@@ -22,7 +22,7 @@ public:
 
   Error start_listen();
   void stop_listen();
-  OSEvent *get_event();
+  InputEvent *get_event();
 };
 
 } // namespace godot

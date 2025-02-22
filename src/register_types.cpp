@@ -1,6 +1,5 @@
 #include "register_types.h"
 
-#include "os_event.h"
 #include "os_listener.h"
 
 #include <gdextension_interface.h>
@@ -15,7 +14,6 @@ void initialize_module(ModuleInitializationLevel p_level) {
   }
 
   GDREGISTER_ABSTRACT_CLASS(OSListener);
-  GDREGISTER_ABSTRACT_CLASS(OSEvent);
 }
 
 void uninitialize_module(ModuleInitializationLevel p_level) {

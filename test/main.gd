@@ -14,9 +14,9 @@ func _input(event: InputEvent) -> void:
 
 
 func _process(_delta: float) -> void:
-	var e: OSEvent = OSListener.get_singleton().get_event()
+	var e: InputEvent = OSListener.get_singleton().get_event()
 	
-	if e and e.type == e.KEY_PRESS:
-		printt("p >> key pressed", e.code)
-	elif e and e.type == e.KEY_RELEASE:
-		printt("p >> key released", e.code)
+	if e is InputEventKey and e.pressed:
+		printt("p >> key pressed", e.keycode)
+	elif e is InputEventKey and not e.pressed:
+		printt("p >> key released", e.keycode)

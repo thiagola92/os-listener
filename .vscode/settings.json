@@ -60,10 +60,10 @@
         "typeinfo": "cpp"
     },
     "clangd.fallbackFlags": [
-        "-I${workspaceFolder}/src", // Project headers
-        "-I${workspaceFolder}/include", // External headers
+        "-I${workspaceFolder}/src", // Project source headers
+        "-I${workspaceFolder}/include", // Project external headers
+        // Any include from godot start like "#include <godot_cpp/...>"
         "-I${workspaceFolder}/godot-cpp/include", // GDExtension headers
-        "-I${workspaceFolder}/godot-cpp/gdextension", // GDExtension interface header
         "-I${workspaceFolder}/godot-cpp/gen/include", // Generated headers
     ]
 }

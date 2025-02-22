@@ -1,6 +1,7 @@
 #include "x11_listener.h"
 #include "key_mapping_x11.h"
 
+#include <godot_cpp/classes/input_event_key.hpp>
 #include <xcb/xcb.h>
 #include <xcb/xcb_keysyms.h>
 #include <xcb/xinput.h>
@@ -50,7 +51,7 @@ void stop_listen_x11() {
   }
 }
 
-OSEvent *get_x11_event() {
+InputEvent *get_x11_event() {
   if (!connection) {
     return nullptr;
   }
@@ -64,33 +65,33 @@ OSEvent *get_x11_event() {
   uint32_t raw_keycode;
   xcb_keysym_t keysym;
   xcb_ge_generic_event_t *generic_event = (xcb_ge_generic_event_t *)event;
-  OSEvent *os_event = memnew(OSEvent);
+  InputEventKey *event_key = memnew(InputEventKey);
 
   switch (generic_event->event_type) {
   case XCB_INPUT_RAW_KEY_PRESS:
     raw_keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
     keysym = xcb_key_symbols_get_keysym(keysyms, raw_keycode, 0);
 
-    os_event->type = OSEvent::KEY_PRESS;
-    os_event->code = _get_godot_keycode(keysym);
+    event_key->set_keycode(_get_godot_keycode(keysym));
+    event_key->set_pressed(true);
 
     free(event);
 
-    return os_event;
+    return event_key;
   case XCB_INPUT_RAW_KEY_RELEASE:
     raw_keycode = ((xcb_input_raw_key_press_event_t *)event)->detail;
     keysym = xcb_key_symbols_get_keysym(keysyms, raw_keycode, 0);
 
-    os_event->type = OSEvent::KEY_RELEASE;
-    os_event->code = _get_godot_keycode(keysym);
+    event_key->set_keycode(_get_godot_keycode(keysym));
+    event_key->set_pressed(false);
 
     free(event);
 
-    return os_event;
+    return event_key;
   }
 
   free(event);
-  memdelete(os_event);
+  memdelete(event_key);
 
   return nullptr;
 }
@@ -147,19 +148,19 @@ But it's not included in "godot-cpp", so I made this adaptation from the Godot.
 It's not good but the other option is to copy and adapt many files from Godot
 project, which would increase the complexity of the project.
 */
-int _get_godot_keycode(xcb_keysym_t keysym) {
+Key _get_godot_keycode(xcb_keysym_t keysym) {
   if (keysym >= 0x20 && keysym < 0x7E) {  // ASCII, maps 1-1
     if (keysym > 0x60 && keysym < 0x7B) { // Lowercase ASCII.
-      return keysym - 32;
+      return (Key)(keysym - 32);
     } else {
-      return keysym;
+      return (Key)keysym;
     }
   }
 
-  const int k = (int)xkeysym_map[keysym];
+  const Key k = xkeysym_map[keysym];
   if (k) {
     return k;
   }
 
-  return 0;
+  return Key::KEY_NONE;
 }

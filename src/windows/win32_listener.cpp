@@ -1,11 +1,12 @@
 #include "win32_listener.h"
 #include "key_mapping_win32.h"
 
+#include <godot_cpp/classes/input_event_key.hpp>
 #include <list>
 
 HHOOK handle_hook;
 
-std::list<OSEvent *> events;
+std::list<InputEvent *> events;
 
 Error start_listen_win32() {
   handle_hook =
@@ -25,14 +26,14 @@ void stop_listen_win32() {
   }
 }
 
-OSEvent *get_win32_event() {
+InputEvent *get_win32_event() {
   MSG msg;
 
   // Don't use GetMessage() because it will block until message arrive.
   PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
 
   if (events.size() > 0) {
-    OSEvent *e = events.front();
+    InputEvent *e = events.front();
     events.pop_front();
     return e;
   }
@@ -44,17 +45,25 @@ LRESULT CALLBACK _on_event(int number_code, WPARAM wParam, LPARAM lParam) {
   if (number_code == HC_ACTION) {
     KBDLLHOOKSTRUCT *keyboard_event = (KBDLLHOOKSTRUCT *)lParam;
 
-    OSEvent *event = memnew(OSEvent);
+    InputEventKey *event_key = memnew(InputEventKey);
 
     if (wParam == WM_KEYDOWN) {
-      event->type = OSEvent::KEY_PRESS;
-      event->code = _get_godot_keycode(keyboard_event->vkCode);
-      events.push_back(event);
+      event_key->set_keycode(_get_godot_keycode(keyboard_event->vkCode));
+      event_key->set_pressed(true);
+
+      events.push_back(event_key);
+
+      return CallNextHookEx(NULL, number_code, wParam, lParam);
     } else if (wParam == WM_KEYUP) {
-      event->type = OSEvent::KEY_RELEASE;
-      event->code = _get_godot_keycode(keyboard_event->vkCode);
-      events.push_back(event);
+      event_key->set_keycode(_get_godot_keycode(keyboard_event->vkCode));
+      event_key->set_pressed(false);
+
+      events.push_back(event_key);
+
+      return CallNextHookEx(NULL, number_code, wParam, lParam);
     }
+
+    memdelete(event_key);
   }
 
   return CallNextHookEx(NULL, number_code, wParam, lParam);
@@ -69,11 +78,11 @@ But it's not included in "godot-cpp", so I made this adaptation from the Godot.
 It's not good but the other option is to copy and adapt many files from Godot
 project, which would increase the complexity of the project.
 */
-int _get_godot_keycode(DWORD vkcode) {
-    const int k = (int)vk_map[vkcode];
-    if (k) {
-        return k;
-    }
+Key _get_godot_keycode(DWORD vkcode) {
+  const Key k = vk_map[vkcode];
+  if (k) {
+    return k;
+  }
 
-    return 0;
+  return Key::KEY_NONE;
 }
