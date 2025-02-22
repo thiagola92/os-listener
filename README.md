@@ -13,7 +13,7 @@ Why only keyboard events? No reason, I could add others.
 
 # Development
 ```bash
-git clone --filter=blob:none --recurse-submodules https://github.com/thiagola92/os-shortcut.git
+git clone --filter=blob:none --recurse-submodules https://github.com/thiagola92/os-listener.git
 ```
 
 ## Linux (debian)
