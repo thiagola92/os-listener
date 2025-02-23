@@ -44,26 +44,23 @@ InputEvent *get_win32_event() {
 LRESULT CALLBACK _on_event(int number_code, WPARAM wParam, LPARAM lParam) {
   if (number_code == HC_ACTION) {
     KBDLLHOOKSTRUCT *keyboard_event = (KBDLLHOOKSTRUCT *)lParam;
-
     InputEventKey *event_key = memnew(InputEventKey);
 
-    if (wParam == WM_KEYDOWN) {
-      event_key->set_keycode(_get_godot_keycode(keyboard_event->vkCode));
-      event_key->set_pressed(true);
+    Key keycode = _get_godot_keycode(keyboard_event->vkCode);
+    bool is_key_pressed = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
+    bool is_alt_pressed = (keyboard_event->flags & LLKHF_ALTDOWN) == LLKHF_ALTDOWN;
+    bool is_shift_pressed = keycode == Key::KEY_SHIFT;
+    bool is_ctrl_pressed = keycode == Key::KEY_CTRL;
+    bool is_meta_pressed = keycode == Key::KEY_META;
 
-      events.push_back(event_key);
+    event_key->set_keycode(keycode);
+    event_key->set_pressed(is_key_pressed);
+    event_key->set_alt_pressed(is_alt_pressed);
+    event_key->set_shift_pressed(is_shift_pressed);
+    event_key->set_ctrl_pressed(is_ctrl_pressed);
+    event_key->set_meta_pressed(is_meta_pressed);
 
-      return CallNextHookEx(NULL, number_code, wParam, lParam);
-    } else if (wParam == WM_KEYUP) {
-      event_key->set_keycode(_get_godot_keycode(keyboard_event->vkCode));
-      event_key->set_pressed(false);
-
-      events.push_back(event_key);
-
-      return CallNextHookEx(NULL, number_code, wParam, lParam);
-    }
-
-    memdelete(event_key);
+    events.push_back(event_key);
   }
 
   return CallNextHookEx(NULL, number_code, wParam, lParam);

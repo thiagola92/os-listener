@@ -24,81 +24,75 @@
 using namespace godot;
 
 // https://refactoring.guru/design-patterns/singleton/cpp/example
-OSListener *OSListener::singleton = nullptr;
+OSListener* OSListener::singleton = nullptr;
 
-OSListener *OSListener::get_singleton() {
-  if (singleton == nullptr) {
-    singleton = memnew(OSListener);
-  }
+OSListener* OSListener::get_singleton() {
+	if (singleton == nullptr) {
+		singleton = memnew(OSListener);
+	}
 
-  return singleton;
+	return singleton;
 }
 
+#if defined(OS_WINDOWS)
 Error OSListener::start_listen() {
-#ifdef OS_MACOS
-  //
-#endif
-
-#ifdef OS_WINDOWS
-  return start_listen_win32();
-#endif
-
-#ifdef OS_LINUX
-  return start_listen_x11();
-#endif
-
-  WARN_PRINT_ONCE("Not implemented for this OS");
-  return FAILED;
+	return start_listen_win32();
 }
+#elif defined(OS_LINUX)
+Error OSListener::start_listen() {
+	return start_listen_x11();
+}
+# else
+Error OSListener::start_listen() {
+	WARN_PRINT_ONCE("Not implemented for this OS");
+	return FAILED;
+}
+#endif
 
+#if defined(OS_WINDOWS)
 void OSListener::stop_listen() {
-#ifdef OS_MACOS
-  //
-#endif
-
-#ifdef OS_WINDOWS
-  return stop_listen_win32();
-#endif
-
-#ifdef OS_LINUX
-  return stop_listen_x11();
-#endif
-
-  WARN_PRINT_ONCE("Not implemented for this OS");
+	return stop_listen_win32();
 }
-
-InputEvent *OSListener::get_event() {
-#ifdef OS_MACOS
-  //
-#endif
-
-#ifdef OS_WINDOWS
-  return get_win32_event();
-#endif
-
-#ifdef OS_LINUX
-  const char *x11 = getenv("DISPLAY");
-  const char *wayland = getenv("WAYLAND_DISPLAY");
-
-  if (wayland && !x11) {
-    WARN_PRINT_ONCE("Native Wayland doesn't support global shortcuts");
-    return nullptr;
-  }
-
-  return get_x11_event();
-#endif
-
-  WARN_PRINT_ONCE("Not implemented for this OS");
-  return nullptr;
+#elif defined(OS_LINUX)
+void OSListener::stop_listen() {
+	return stop_listen_x11();
 }
+# else
+void OSListener::stop_listen() {
+	WARN_PRINT_ONCE("Not implemented for this OS");
+}
+#endif
+
+#if defined(OS_WINDOWS)
+InputEvent* OSListener::get_event() {
+	return get_win32_event();
+}
+#elif defined(OS_LINUX)
+InputEvent* OSListener::get_event() {
+	const char* x11 = getenv("DISPLAY");
+	const char* wayland = getenv("WAYLAND_DISPLAY");
+
+	if (wayland && !x11) {
+		WARN_PRINT_ONCE("Native Wayland doesn't support global shortcuts");
+		return nullptr;
+	}
+
+	return get_x11_event();
+}
+# else
+InputEvent* OSListener::get_event() {
+	WARN_PRINT_ONCE("Not implemented for this OS");
+	return nullptr;
+}
+#endif
 
 void OSListener::_bind_methods() {
-  ClassDB::bind_static_method("OSListener", D_METHOD("get_singleton"),
-                              &OSListener::get_singleton);
+	ClassDB::bind_static_method("OSListener", D_METHOD("get_singleton"),
+		&OSListener::get_singleton);
 
-  ClassDB::bind_method(D_METHOD("start_listen"), &OSListener::start_listen);
-  ClassDB::bind_method(D_METHOD("stop_listen"), &OSListener::stop_listen);
-  ClassDB::bind_method(D_METHOD("get_event"), &OSListener::get_event);
+	ClassDB::bind_method(D_METHOD("start_listen"), &OSListener::start_listen);
+	ClassDB::bind_method(D_METHOD("stop_listen"), &OSListener::stop_listen);
+	ClassDB::bind_method(D_METHOD("get_event"), &OSListener::get_event);
 }
 
 OSListener::OSListener() {}

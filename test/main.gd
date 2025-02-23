@@ -8,15 +8,15 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
-			printt("i >> key pressed", event.keycode)
+			printt(event)
 		else:
-			printt("i >> key released", event.keycode)
+			printt(event)
 
 
 func _process(_delta: float) -> void:
-	var e: InputEvent = OSListener.get_singleton().get_event()
+	var event: InputEvent = OSListener.get_singleton().get_event()
 	
-	if e is InputEventKey and e.pressed:
-		printt("p >> key pressed", e.keycode)
-	elif e is InputEventKey and not e.pressed:
-		printt("p >> key released", e.keycode)
+	if event is InputEventKey and event.pressed:
+		printt(event)
+	elif event is InputEventKey and not event.pressed:
+		printt(event)

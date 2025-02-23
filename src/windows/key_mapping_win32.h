@@ -50,18 +50,18 @@ static std::unordered_map<uint32_t, Key> vk_map = {
     // VK_EXECUTE (0x2B), Old and uncommon.
     {VK_SNAPSHOT, Key::KEY_PRINT},    // (0x2C)
     {VK_INSERT, Key::KEY_INSERT},     // (0x2D)
-    {VK_DELETE, Key::KEY_KEY_DELETE}, // (0x2E)
+    {VK_DELETE, Key::KEY_DELETE}, // (0x2E)
     {VK_HELP, Key::KEY_HELP},         // (0x2F)
-    {0x30, Key::KEY_KEY_0},           // 0 key.
-    {0x31, Key::KEY_KEY_1},           // 1 key.
-    {0x32, Key::KEY_KEY_2},           // 2 key.
-    {0x33, Key::KEY_KEY_3},           // 3 key.
-    {0x34, Key::KEY_KEY_4},           // 4 key.
-    {0x35, Key::KEY_KEY_5},           // 5 key.
-    {0x36, Key::KEY_KEY_6},           // 6 key.
-    {0x37, Key::KEY_KEY_7},           // 7 key.
-    {0x38, Key::KEY_KEY_8},           // 8 key.
-    {0x39, Key::KEY_KEY_9},           // 9 key.
+    {0x30, Key::KEY_0},           // 0 key.
+    {0x31, Key::KEY_1},           // 1 key.
+    {0x32, Key::KEY_2},           // 2 key.
+    {0x33, Key::KEY_3},           // 3 key.
+    {0x34, Key::KEY_4},           // 4 key.
+    {0x35, Key::KEY_5},           // 5 key.
+    {0x36, Key::KEY_6},           // 6 key.
+    {0x37, Key::KEY_7},           // 7 key.
+    {0x38, Key::KEY_8},           // 8 key.
+    {0x39, Key::KEY_9},           // 9 key.
     // 0x3A-40 are undefined.
     {0x41, Key::KEY_A},       // A key.
     {0x42, Key::KEY_B},       // B key.
