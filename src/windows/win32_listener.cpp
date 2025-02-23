@@ -46,19 +46,8 @@ LRESULT CALLBACK _on_event(int number_code, WPARAM wParam, LPARAM lParam) {
     KBDLLHOOKSTRUCT *keyboard_event = (KBDLLHOOKSTRUCT *)lParam;
     InputEventKey *event_key = memnew(InputEventKey);
 
-    Key keycode = _get_godot_keycode(keyboard_event->vkCode);
-    bool is_key_pressed = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
-    bool is_alt_pressed = (keyboard_event->flags & LLKHF_ALTDOWN) == LLKHF_ALTDOWN;
-    bool is_shift_pressed = keycode == Key::KEY_SHIFT;
-    bool is_ctrl_pressed = keycode == Key::KEY_CTRL;
-    bool is_meta_pressed = keycode == Key::KEY_META;
-
-    event_key->set_keycode(keycode);
-    event_key->set_pressed(is_key_pressed);
-    event_key->set_alt_pressed(is_alt_pressed);
-    event_key->set_shift_pressed(is_shift_pressed);
-    event_key->set_ctrl_pressed(is_ctrl_pressed);
-    event_key->set_meta_pressed(is_meta_pressed);
+    event_key->set_keycode(_get_godot_keycode(keyboard_event->vkCode));
+    event_key->set_pressed((wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN));
 
     events.push_back(event_key);
   }
@@ -70,8 +59,9 @@ LRESULT CALLBACK _on_event(int number_code, WPARAM wParam, LPARAM lParam) {
 I would love to make an "#include" that would give me access to code from:
    https://github.com/godotengine/godot/blob/master/platform/windows/key_mapping_windows.cpp
    https://github.com/godotengine/godot/blob/master/core/os/keyboard.cpp
+   https://github.com/godotengine/godot/blob/master/platform/windows/display_server_windows.cpp
 
-But it's not included in "godot-cpp", so I made this adaptation from the Godot.
+But it's not included in "godot_cpp", so I made this adaptation from the Godot.
 It's not good but the other option is to copy and adapt many files from Godot
 project, which would increase the complexity of the project.
 */

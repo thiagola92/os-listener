@@ -3,6 +3,10 @@ extends Node2D
 
 func _ready() -> void:
 	assert(OSListener.get_singleton().start_listen() == OK)
+	
+	# Make sure to be in the right layout while testing.
+	var layout: int = DisplayServer.keyboard_get_current_layout()
+	print(DisplayServer.keyboard_get_layout_name(layout))
 
 
 func _input(event: InputEvent) -> void:
@@ -11,7 +15,7 @@ func _input(event: InputEvent) -> void:
 			printt(event)
 		else:
 			printt(event)
-
+ 
 
 func _process(_delta: float) -> void:
 	var event: InputEvent = OSListener.get_singleton().get_event()
