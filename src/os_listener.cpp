@@ -34,15 +34,15 @@ Error OSListener::start_listen() { return start_listen_win32(); }
 Error OSListener::start_listen() { return start_listen_x11(); }
 #else
 Error OSListener::start_listen() {
-  WARN_PRINT_ONCE("OSShortcut not implemented for this OS");
-  return FAILED;
+  WARN_PRINT_ONCE("OSShortcut not implemented for this OS/Web");
+  return OK;
 }
 #endif
 
 #if defined(OS_WINDOWS)
-void OSListener::stop_listen() { return stop_listen_win32(); }
+void OSListener::stop_listen() { stop_listen_win32(); }
 #elif defined(OS_LINUX)
-void OSListener::stop_listen() { return stop_listen_x11(); }
+void OSListener::stop_listen() { stop_listen_x11(); }
 #else
 void OSListener::stop_listen() {}
 #endif

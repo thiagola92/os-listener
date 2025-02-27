@@ -42,7 +42,13 @@ elif env["platform"] == "linux":
         source=sources,
     )
 else:
-    print("OSListener doesn't support this operating system")
-    exit(1)
+    # Creates library but the library doesn't do nothing.
+    library = env.SharedLibrary(
+        "test/bin/liboslistener{}{}".format(
+            env["suffix"],
+            env["SHLIBSUFFIX"],
+        ),
+        source=sources,
+    )
 
 Default(library)

@@ -15,6 +15,9 @@ test/export/**
 *.exp
 *.dll
 
+# Web
+*.o
+
 # Binaries
 test/bin/*
 !test/bin/.gitkeep

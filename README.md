@@ -41,3 +41,13 @@ python -m SCons platform=windows target=template_release    # Release
 ```
 
 Binaries will be located at `test/bin`.  
+
+## Web
+**WARNING**: Needs [Emscripten](https://emscripten.org/) installed and in your PATH (check by writing `emcc` in the terminal).  
+
+```bash
+scons platform=web threads=no                            # Debug
+scons platform=web threads=no target=template_release    # Release
+```
+
+**NOTE**: Not about GDExtension for web but it can help: https://docs.godotengine.org/en/stable/contributing/development/compiling/compiling_for_web.html#doc-compiling-for-web  
