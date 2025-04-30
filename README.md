@@ -16,7 +16,12 @@ git clone --filter=blob:none --recurse-submodules https://github.com/thiagola92/
 
 ## Linux (debian)
 ```bash
-sudo apt install libx11-dev libxcb-xinput-dev
+sudo apt install libx11-dev libxcb-xinput-dev libxcb-keysyms1-dev
+cp --dereference /usr/lib/x86_64-linux-gnu/libX11.so test/bin/linux/libX11.so
+cp --dereference /usr/lib/x86_64-linux-gnu/libxcb.so test/bin/linux/libxcb.so
+cp --dereference /usr/lib/x86_64-linux-gnu/libxcb-xinput.so test/bin/linux/libxcb-xinput.so
+cp --dereference /usr/lib/x86_64-linux-gnu/libxcb-keysyms.so test/bin/linux/libxcb-keysyms.so
+cp --dereference /usr/lib/x86_64-linux-gnu/libwayland-client.so test/bin/linux/libwayland-client.so
 
 cd godot-cpp
 godot --dump-extension-api

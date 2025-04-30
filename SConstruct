@@ -30,12 +30,13 @@ elif env["platform"] == "linux":
         LIBS=["X11", "xcb", "xcb-xinput", "xcb-keysyms", "wayland-client"],
         CPPPATH=["src/linux/"],
         CPPDEFINES=["OS_LINUX"],
+        RPATH=["."],
     )
 
     sources += Glob("src/linux/*.cpp")
 
     library = env.SharedLibrary(
-        "test/bin/liboslistener{}{}".format(
+        "test/bin/linux/liboslistener{}{}".format(
             env["suffix"],
             env["SHLIBSUFFIX"],
         ),
@@ -44,7 +45,8 @@ elif env["platform"] == "linux":
 else:
     # Creates library but the library doesn't do nothing.
     library = env.SharedLibrary(
-        "test/bin/liboslistener{}{}".format(
+        "test/bin/{}/liboslistener{}{}".format(
+            env["platform"],
             env["suffix"],
             env["SHLIBSUFFIX"],
         ),
