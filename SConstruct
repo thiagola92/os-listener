@@ -27,10 +27,10 @@ elif env["platform"] == "windows":
     )
 elif env["platform"] == "linux":
     env.Append(
-        LIBS=["X11", "xcb", "xcb-xinput", "xcb-keysyms", "wayland-client"],
         CPPPATH=["src/linux/"],
         CPPDEFINES=["OS_LINUX"],
-        RPATH=["."],
+        LIBPATH=["lib"],
+        LINKFLAGS=["-l:libX11.a", "-l:libxcb.a", "-l:libxcb-xinput.a", "-l:libxcb-keysyms.a", "-l:libwayland-client.a"]
     )
 
     sources += Glob("src/linux/*.cpp")

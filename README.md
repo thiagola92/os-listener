@@ -17,11 +17,15 @@ git clone --filter=blob:none --recurse-submodules https://github.com/thiagola92/
 ## Linux (debian)
 ```bash
 sudo apt install libx11-dev libxcb-xinput-dev libxcb-keysyms1-dev
-cp --dereference /usr/lib/x86_64-linux-gnu/libX11.so test/bin/linux/libX11.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libxcb.so test/bin/linux/libxcb.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libxcb-xinput.so test/bin/linux/libxcb-xinput.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libxcb-keysyms.so test/bin/linux/libxcb-keysyms.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libwayland-client.so test/bin/linux/libwayland-client.so
+
+# Wayland static library was compile from official repository.
+git clone https://gitlab.freedesktop.org/wayland/wayland
+cd wayland
+meson build -Ddocumentation=false -Dtests=false -Ddefault_library=static
+ninja -C build/ install
+cp build/src/libwayland-client.a ../lib
+cd ..
+rm -rf wayland
 
 cd godot-cpp
 godot --dump-extension-api

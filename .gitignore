@@ -4,10 +4,11 @@ test/export/**
 
 # Scons
 *.dblite
+*.os
 
 # Linux
-*.os
 *.so
+*.a
 
 # Windows
 *.obj
