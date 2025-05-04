@@ -295,6 +295,3 @@ cython_debug/
 
 # Unknown
 *.os
-
-# Maintain lib directory.
-!lib/.gitkeep
