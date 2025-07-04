@@ -14,18 +14,10 @@ Why only keyboard events? No reason, I could add others.
 git clone --filter=blob:none --recurse-submodules https://github.com/thiagola92/os-listener.git
 ```
 
-## Linux (debian)
-```bash
-sudo apt install libx11-dev libxcb-xinput-dev libxcb-keysyms1-dev libxcb-randr0-dev
-cp --dereference /usr/lib/x86_64-linux-gnu/libX11.so test/bin/linux/libX11.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libxcb.so test/bin/linux/libxcb.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libxcb-xinput.so test/bin/linux/libxcb-xinput.so.0
-ln -s test/bin/linux/libxcb-xinput.so.0 test/bin/linux/libxcb-xinput.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libxcb-keysyms.so test/bin/linux/libxcb-keysyms.so
-ln -s test/bin/linux/libxcb-keysyms.so.1 test/bin/linux/libxcb-keysyms.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libxcb-randr.so test/bin/linux/libxcb-randr.so
-cp --dereference /usr/lib/x86_64-linux-gnu/libwayland-client.so test/bin/linux/libwayland-client.so
+## Ubuntu
+Make sure to compile static libraries: [STATIC.md](./STATIC.md)
 
+```bash
 cd godot-cpp
 godot --dump-extension-api
 scons platform=linux custom_api_file=extension_api.json

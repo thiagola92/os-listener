@@ -295,3 +295,8 @@ cython_debug/
 
 # Unknown
 *.os
+
+# Libs
+libs/**
+!libs/
+!libs/.gitkeep
