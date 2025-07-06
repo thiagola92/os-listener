@@ -27,7 +27,7 @@ scons platform=linux                            # Debug
 scons platform=linux target=template_release    # Release
 ```
 
-Binaries will be located at `test/bin`.  
+Binaries will be located at `demo/bin`.  
 
 ## Windows
 ```bash
@@ -40,7 +40,7 @@ python -m SCons platform=windows                            # Debug
 python -m SCons platform=windows target=template_release    # Release
 ```
 
-Binaries will be located at `test/bin`.  
+Binaries will be located at `demo/bin`.  
 
 ## Web
 **WARNING**: Needs [Emscripten](https://emscripten.org/) installed and in your PATH (check by writing `emcc` in the terminal).  

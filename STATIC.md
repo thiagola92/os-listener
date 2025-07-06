@@ -86,7 +86,6 @@ make
 
 cd ..
 cp libffi/x86_64-pc-linux-gnu/.libs/libffi.a libs
-cp libffi/x86_64-pc-linux-gnu/.libs/libffi_convenience.a libs
 rm -rf libffi
 
 # wayland-client
