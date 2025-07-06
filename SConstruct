@@ -19,7 +19,7 @@ elif env["platform"] == "windows":
     sources += Glob("src/windows/*.cpp")
 
     library = env.SharedLibrary(
-        "test/bin/liboslistener{}{}".format(
+        "demo/bin/liboslistener{}{}".format(
             env["suffix"],
             env["SHLIBSUFFIX"],
         ),
@@ -36,7 +36,7 @@ elif env["platform"] == "linux":
     sources += Glob("src/linux/*.cpp")
 
     library = env.SharedLibrary(
-        "test/bin/linux/liboslistener{}{}".format(
+        "demo/bin/linux/liboslistener{}{}".format(
             env["suffix"],
             env["SHLIBSUFFIX"],
         ),
@@ -66,7 +66,7 @@ elif env["platform"] == "linux":
 else:
     # Creates library but the library doesn't do nothing.
     library = env.SharedLibrary(
-        "test/bin/{}/liboslistener{}{}".format(
+        "demo/bin/{}/liboslistener{}{}".format(
             env["platform"],
             env["suffix"],
             env["SHLIBSUFFIX"],
