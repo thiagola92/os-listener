@@ -32,7 +32,7 @@ Binaries will be located at `demo/bin`.
 ## Windows
 ```bash
 cd godot-cpp
-./godot --dump-extension-api
+.\godot.exe --dump-extension-api
 python -m SCons platform=windows custom_api_file=extension_api.json
 cd ..
 
