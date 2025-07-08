@@ -1,5 +1,11 @@
-# Compiling static libraries
+# Prerequisites
+- Godot
+- Git
+- SCons
 
+# Ubuntu
+
+Compiling static libraries:  
 ```bash
 # libX11
 sudo apt build-dep libx11-dev
@@ -101,3 +107,9 @@ cd ..
 cp wayland/build/src/libwayland-client.a libs
 rm -rf wayland
 ```
+
+# Windows
+> I don't know much about Windows, so I'm using Visual Studio which takes care of a bunch of details.
+
+- Visual Studio Community 2022
+    - Worload > Desktop development with C++

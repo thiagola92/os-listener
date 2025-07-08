@@ -19,7 +19,7 @@ elif env["platform"] == "windows":
     sources += Glob("src/windows/*.cpp")
 
     library = env.SharedLibrary(
-        "demo/bin/liboslistener{}{}".format(
+        "demo/bin/windows/liboslistener{}{}".format(
             env["suffix"],
             env["SHLIBSUFFIX"],
         ),

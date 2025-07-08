@@ -10,12 +10,13 @@ Listen for keyboard events from OS (Operating System).
 Why only keyboard events? No reason, I could add others.  
 
 # Development
+Prerequisites: [PREREQUISITES.md](./PREREQUISITES.md)  
+
 ```bash
 git clone --filter=blob:none --recurse-submodules https://github.com/thiagola92/os-listener.git
 ```
 
 ## Ubuntu
-Make sure to compile static libraries: [STATIC.md](./STATIC.md)
 
 ```bash
 cd godot-cpp
