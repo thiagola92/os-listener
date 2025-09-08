@@ -8,9 +8,6 @@
 export.cfg
 export_credentials.cfg
 
-# Exported game
-*.pck
-
 # Imported translations (automatically generated from CSV files)
 *.translation
 
