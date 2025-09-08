@@ -4,6 +4,7 @@ Listen for keyboard events from OS (Operating System).
 - Linux
     - ✔️ X11
     - ❌ Wayland
+		- ✔️ Applications running with XWayland
 - ✔️ Windows
 - ❌ MacOS
 
@@ -50,5 +51,6 @@ Binaries will be located at `demo/bin`.
 scons platform=web threads=no                            # Debug
 scons platform=web threads=no target=template_release    # Release
 ```
+
 
 **NOTE**: Not about GDExtension for web but it can help: https://docs.godotengine.org/en/stable/contributing/development/compiling/compiling_for_web.html#doc-compiling-for-web  
